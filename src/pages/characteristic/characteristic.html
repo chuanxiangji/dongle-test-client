@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title style="margin-right: 20px">Characteristic Page</ion-title>
+    <ion-buttons style="width:44px" end>
+        <ion-spinner *ngIf="scanning" name="circles"></ion-spinner>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <h2>uuid:   {{characteristic.characteristic}}</h2>
+  <p>properties:   {{characteristic.properties}}</p>
+  <p>service:   {{characteristic.service}}</p>
+  <p *ngFor="let descriptor of characteristic.descriptors">descriptor uuid:   {{descriptor.uuid}}</p>
+  <button ion-button [disabled]="!checkEnabled('Read')" (click)="ble_read()">read</button>
+  <button ion-button [disabled]="!checkEnabled('Write')" (click)="set_write()">write</button>
+  <button ion-button [disabled]="!checkEnabled('Notify')" (click)="ble_notify()">notif</button>
+  <p style="white-space:pre-wrap" class="sc-text" *ngIf="on_read">data: {{datastring}}</p>
+  <p style="white-space:pre-wrap" class="sc-text" *ngIf="on_notify">notification started for: ({{characteristic.service}}, {{characteristic.characteristic}})</p>
+
+  <form [formGroup]="inputForm" (ngSubmit)="onWriteInput(inputForm.value)" *ngIf="on_write">
+    <ion-item class="item-format">
+      <ion-label fixed>Input</ion-label>
+      <ion-input type="text" [(ngModel)]="this.datastring" formControlName="dataInput" required></ion-input>
+      <button ion-button item-right outline>enter</button>
+    </ion-item>
+  </form> 
+</ion-content>

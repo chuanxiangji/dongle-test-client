@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title style="margin-right: 20px">Device Page "{{device.name}}"</ion-title>
+    <ion-buttons style="width:44px" end>
+        <ion-spinner *ngIf="connecting" name="circles"></ion-spinner>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content overflow-scroll="true">
+    <button ion-button (click)="set_filter()" style="float: top;" clear small>filter by service</button>
+    <form [formGroup]="inputForm" (ngSubmit)="onFilterInput(inputForm.value)" *ngIf="on_filter">
+        <ion-item class="item-format">
+            <ion-label fixed>Input</ion-label>
+            <ion-input type="text" [(ngModel)]="this.servicestring" formControlName="service_uuid" required></ion-input>
+            <button ion-button item-right outline small>enter</button>
+        </ion-item>
+    </form> 
+
+    <ion-item *ngFor="let characteristic of filteredCharacteristics">
+        <h3>{{characteristic.characteristic}}, {{characteristic.service}}, {{characteristic.properties}}</h3>
+        <button ion-button (click)="connectToCharacteristic(device,characteristic)" clear small>select</button>
+    </ion-item>
+</ion-content>
